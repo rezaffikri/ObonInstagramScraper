@@ -24,16 +24,14 @@ if os.path.exists("AppSettings.json"):
         instagramPassword = config["instagram"]["password"]
         telegramToken = config["telegram_send"]["token"]
         telegramChatId = config["telegram_send"]["chat_id"]
-        telegram_send.global_config = executedPath + "/" + "telegram-send.conf"
+        pathConfig = telegram_send.get_config_path()
+        os.makedirs(pathConfig.replace("telegram-send.conf", ""), exist_ok=False)
+        print("telegram-send.conf path: " + pathConfig)
         if telegramToken and telegramChatId:
-            path_config = executedPath + "/" + "telegram-send.conf"
-            with open(path_config, 'w+') as f:
+            with open(pathConfig, 'w+') as f:
                 f.write(f'[telegram]\ntoken = {telegramToken}\nchat_id = {telegramChatId}')
                 print("Override telegram-send config")
-                if os.path.exists(telegram_send.global_config):
-                    telegram_send.send(messages=["Telegram bot synced! with Override Config"])
-                else:
-                    print("telegram-send.conf not found: " + telegram_send.global_config)   
+            telegram_send.send(messages=["Telegram bot synced! with Override Config"])
         if instagramUserName and instagramPassword:
             # if you want to download private user media, you need to login and follow their instagram
             # if your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
@@ -57,15 +55,15 @@ while True:
         for PROFILE in PROFILES:
             L.dirname_pattern = donwloadPath + PROFILE
             print("Profile: "+PROFILE)
-            print("Timeout: random between 31 and 1800 seconds")
-            time.sleep(random.randint(31,1800))
+            print("Timeout: random between 31 and 60 seconds")
+            time.sleep(random.randint(31,60))
             profile = instaloader.Profile.from_username(L.context, PROFILE)
             print("Profile loaded")
             for post in profile.get_posts():
                 #get today post only
                 if post.date_local.date() == datetime.datetime.now().date():
-                    print("Timeout: random between 31 and 1800 seconds")
-                    time.sleep(random.randint(31,1800))
+                    print("Timeout: random between 31 and 60 seconds")
+                    time.sleep(random.randint(31,60))
                     download = L.download_post(post,PROFILE)
                     folderProfile = folderDownload + post.owner_username
                     if download == True:
