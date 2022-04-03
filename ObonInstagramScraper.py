@@ -13,7 +13,9 @@ L = instaloader.Instaloader(download_comments=False, max_connection_attempts=9, 
 
 present = datetime.datetime.now()
 folderDownload = "MediaDownloads/"
-path = os.getcwd() + "/"  + folderDownload
+executedPath = os.getcwd()
+print("executedPath: " +executedPath)
+donwloadPath = executedPath + "/"  + folderDownload
 
 if os.path.exists("AppSettings.json"):
     with open('AppSettings.json', 'r') as f:
@@ -22,13 +24,16 @@ if os.path.exists("AppSettings.json"):
         instagramPassword = config["instagram"]["password"]
         telegramToken = config["telegram_send"]["token"]
         telegramChatId = config["telegram_send"]["chat_id"]
-        telegram_send.global_config = os.getcwd() + "/" + "telegram-send.conf"
+        telegram_send.global_config = executedPath + "/" + "telegram-send.conf"
         if telegramToken and telegramChatId:
-            path_config = os.getcwd() + "/" + "telegram-send.conf"
+            path_config = executedPath + "/" + "telegram-send.conf"
             with open(path_config, 'w+') as f:
                 f.write(f'[telegram]\ntoken = {telegramToken}\nchat_id = {telegramChatId}')
                 print("Override telegram-send config")
-                telegram_send.send(messages=["Telegram bot synced! with Override Config"])    
+                if os.path.exists(telegram_send.global_config):
+                    telegram_send.send(messages=["Telegram bot synced! with Override Config"])
+                else:
+                    print("telegram-send.conf not found: " + telegram_send.global_config)   
         if instagramUserName and instagramPassword:
             # if you want to download private user media, you need to login and follow their instagram
             # if your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
@@ -50,7 +55,7 @@ PROFILES = ["muslimmyway", "masjidnuruliman", "muhajirprojectpeduli", "muhajirpr
 while True:
     try:
         for PROFILE in PROFILES:
-            L.dirname_pattern = path + PROFILE
+            L.dirname_pattern = donwloadPath + PROFILE
             print("Profile: "+PROFILE)
             print("Timeout: random between 31 and 1800 seconds")
             time.sleep(random.randint(31,1800))
@@ -123,7 +128,7 @@ while True:
                 #             if dateFile.date() < present.date():
                 #                 os.remove(g)
                 #                 print("File deleted")
-                shutil.rmtree(path)
+                shutil.rmtree(donwloadPath)
                 print("Old file deleted")
             except:
                 print("Delete old file error")  
