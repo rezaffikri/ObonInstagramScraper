@@ -22,21 +22,24 @@ if os.path.exists("AppSettings.json"):
         instagramPassword = config["instagram"]["password"]
         telegramToken = config["telegram_send"]["token"]
         telegramChatId = config["telegram_send"]["chat_id"]
-
+        telegram_send.global_config = os.getcwd() + "/" + "telegram-send.conf"
         if telegramToken and telegramChatId:
-            path_config = telegram_send.get_config_path()
+            path_config = os.getcwd() + "/" + "telegram-send.conf"
             with open(path_config, 'w+') as f:
                 f.write(f'[telegram]\ntoken = {telegramToken}\nchat_id = {telegramChatId}')
-                print("Override telegram-send config")       
+                print("Override telegram-send config")
+                telegram_send.send(messages=["Telegram bot synced! with Override Config"])    
         if instagramUserName and instagramPassword:
             # if you want to download private user media, you need to login and follow their instagram
             # if your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
             print("Login")
             BOT_INSTAGRAM_ACCOUNT = L.login(instagramUserName,instagramPassword)
             print("Login successful")
+            telegram_send.send(messages=["Instagram login with username: " + instagramUserName]) 
 else:
     # assume you are not want to login and already config telegram-send from command line with telegram-send --configure-group
     print("Not login")
+    telegram_send.send(messages=["Telegram bot synced! with Default Config"])  
 
 # Prod
 PROFILES = ["muslimmyway", "masjidnuruliman", "muhajirprojectpeduli", "muhajirproject", "ad_dariny", "eta.erwanditarmiziofficial", "muhajirprojecttilawah", "muslimafiyahcom", "the_rabbaanians", "haloustadz", "dzulqarnainms", "ustadzaris", "yufid.tv", "parentingruqoyyah", "ub_cintasunnah", "mabduhtuasikal", "hsi.abdullahroy", "rodjatv", "firanda_andirja_official", "rumayshocom", "manhajsalafus.shalih", "indonesiabertauhidofficial", "khalidbasalamahofficial", "amminurbaits", "muslimorid", "muhammadnuzuldzikri", "fikihmuamalatkontemporer", "raehanul_bahraen", "syafiqrizabasalamah_official"]
