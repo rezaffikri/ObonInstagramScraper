@@ -1,0 +1,1 @@
+web: gunicorn ObonInstagramScraper:app --log-file -
