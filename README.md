@@ -10,12 +10,11 @@
 - telegram-send
  
  ##  Setup
- 
 Creating a Bot on Telegram:
 - Visit BotFather channel on Telegram
 - Send command /newbot
 - Follow the BotFather instruction create Bot
-- Save the access token
+- Save the Telegram Bot Token
 
 Install Python:
 - Install Python
@@ -27,10 +26,29 @@ Install Python Project:
 pip install instaloader
 pip install telegram-send
 ```
+
+Edit ObonInstagramScraper.py:
+- Create or edit AppSettings.json file, see AppSettings.Development.json for example
+- Edit username and password on AppSettings.json
+    - *If you want to download private user media, you need to login and follow their instagram
+    - *If your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
+- Insert all of username you want to scrap on PROFILES = ["username_1", "username_2"]
+- Currenly to prevent network to be restric, the app will sleep to delay hit, Edit time.sleep(random.randint(31,1800)) to fix value or smaller range number
 Connecting Telegram bot:
-- Run CMD as administrator
-```elm
-telegram-send --configure-group
-```
-- Follow the telegram-send instruction to connecting to your group
-- Edit ObonInstagramScraper.py for set user or set accounts you'd like to follow, and run it.
+- From command line:
+    - Run CMD as administrator
+    ```elm
+    telegram-send --configure-group
+    ```
+    - Follow the telegram-send instruction to connecting to your group
+- From config file:
+    - Create or edit AppSettings.json file, see AppSettings.Development.json for example
+    - Edit token and chat id
+    - Get chat id with this step:
+        - Add the Telegram Bot to the group.
+        - Get the list of updates for your Bot: api.telegram.org/bot<Telegram Bot Token>/getUpdates, example: api.telegram.org/bot139___UdeY/getUpdates
+        - Look for the "chat" object, on the example below the Chat Id is -211287643:
+            ```
+           "chat":{"id":211287643,"title":"InstagramGroup","type":"group","all_members_are_administrators":true}
+            ```
+        - If you created the new group with the bot and you only get {"ok":true,"result":[]}, remove and add the bot again to the group.
