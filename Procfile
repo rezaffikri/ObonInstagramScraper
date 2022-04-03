@@ -1,1 +1,2 @@
-web: gunicorn ObonInstagramScraper:app --log-file -
+web: python ObonInstagramScraper.py
+worker: python ObonInstagramScraper.py 
