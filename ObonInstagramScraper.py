@@ -80,7 +80,7 @@ while True:
                                         with open(folderProfile+"/"+post.shortcode+fileId+".mp4", "rb") as f:
                                             telegram_send.send(files=[f])   
                                 except ValueError:
-                                    print("Send media error")
+                                    print("Send media error: \n" + ValueError)
                                     pass
                         else:
                             try:
@@ -91,7 +91,7 @@ while True:
                                     with open(folderProfile+"/"+post.shortcode+".mp4", "rb") as f:
                                         telegram_send.send(files=[f])   
                             except ValueError:
-                                print("Send media error")
+                                print("Send media error: \n" + ValueError)
                                 pass
                         try:
                             if post.caption is None:
@@ -99,7 +99,7 @@ while True:
                             else:
                                 telegram_send.send(messages=[post.owner_username+": "+post.caption + "\n" + post.date_local.strftime("%d/%b/%Y, %H:%M:%S")])
                         except:
-                            print("Send caption error")
+                            print("Send caption error: \n" + ValueError)
                             pass
                     else:
                         # if donwload false, it means all post already downloaded
@@ -115,8 +115,8 @@ while True:
                 print("Start delete old file")
                 shutil.rmtree(donwloadPath)
                 print("Old file deleted")
-            except:
-                print("Delete old file error")  
+            except ValueError:
+                print("Delete old file error: \n" + ValueError)
     except ValueError:
-        print(ValueError)
+        print("Something wrong: \n" + ValueError)
         pass
