@@ -24,9 +24,9 @@ if os.path.exists("AppSettings.json"):
         instagramPassword = config["instagram"]["password"]
         telegramToken = config["telegram_send"]["token"]
         telegramChatId = config["telegram_send"]["chat_id"]
-        PROFILES = config["instagram"]["profiles"]
+        _profiles = config["instagram"]["profiles"]
 
-        if not isinstance(PROFILES, list ):
+        if not isinstance(_profiles, list ):
             sys.exit("Profiles is not configured properly")
 
         pathConfig = telegram_send.get_config_path()
@@ -52,19 +52,21 @@ else:
 
 while True:
     try:
-        for PROFILE in PROFILES:
-            L.dirname_pattern = donwloadPath + PROFILE
-            print("Profile: "+PROFILE)
+        for itemProfile in _profiles:
+            L.dirname_pattern = donwloadPath + itemProfile
+            print("Profile: "+itemProfile)
             print("Timeout: random between 31 and 60 seconds")
             time.sleep(random.randint(31,60))
-            profile = instaloader.Profile.from_username(L.context, PROFILE)
+            profile = instaloader.Profile.from_username(L.context, itemProfile)
             print("Profile loaded")
             for post in profile.get_posts():
-                #get today post only
-                if post.date_local.date() == datetime.datetime.now().date():
+                # convert datetime to your country or local time, for this example i just add +7 hours because my timezone is Asia/jakarta
+                postDateLocal = post.date_utc + datetime.timedelta(hours=7)
+                # get today post only
+                if postDateLocal.date() == datetime.datetime.now().date():
                     print("Timeout: random between 31 and 60 seconds")
                     time.sleep(random.randint(31,60))
-                    download = L.download_post(post,PROFILE)
+                    download = L.download_post(post,itemProfile)
                     folderProfile = folderDownload + post.owner_username
                     if download == True:
                         loopId = 0
@@ -95,9 +97,9 @@ while True:
                                 pass
                         try:
                             if post.caption is None:
-                                telegram_send.send(messages=[post.owner_username+": None \n" + post.date_local.strftime("%d/%b/%Y, %H:%M:%S")])
+                                telegram_send.send(messages=[post.owner_username+": No caption \n" + postDateLocal.strftime("%d/%b/%Y, %H:%M:%S")])
                             else:
-                                telegram_send.send(messages=[post.owner_username+": "+post.caption + "\n" + post.date_local.strftime("%d/%b/%Y, %H:%M:%S")])
+                                telegram_send.send(messages=[post.owner_username+": "+post.caption + "\n" + postDateLocal.strftime("%d/%b/%Y, %H:%M:%S")])
                         except:
                             print("Send caption error: \n" + ValueError)
                             pass
