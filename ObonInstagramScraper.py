@@ -5,7 +5,6 @@ import telegram_send
 import time
 import datetime
 import os
-import platform
 import random
 import json
 
