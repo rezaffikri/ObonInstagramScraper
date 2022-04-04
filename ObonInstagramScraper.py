@@ -102,19 +102,22 @@ while True:
                             print("Send caption error: \n" + ValueError)
                             pass
                     else:
-                        # if donwload false, it means all post already downloaded
+                        print("Post already donwloaded")
                         break  
                 else:
-                    # no new post today
+                    print("No new post today")
                     break  
             print("Next")
-        # every the end of the loop, if old present variable more than datetime.,now delete old file
+        # every the end of the loop, if old present variable more than datetime.now, delete old file
         if present.date() < datetime.datetime.now().date():
             try:
                 present = datetime.datetime.now()
-                print("Start delete old file")
-                shutil.rmtree(donwloadPath)
-                print("Old file deleted")
+                if os.path.exists(donwloadPath):
+                    print("Start delete old file")
+                    shutil.rmtree(donwloadPath)
+                    print("Old file deleted")
+                else:
+                    print("Folder download is empty")
             except ValueError:
                 print("Delete old file error: \n" + ValueError)
     except ValueError:
