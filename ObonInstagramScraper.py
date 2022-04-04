@@ -1,4 +1,6 @@
 import shutil
+import sys
+from tracemalloc import stop
 import instaloader
 import telegram_send
 import time
@@ -24,6 +26,11 @@ if os.path.exists("AppSettings.json"):
         instagramPassword = config["instagram"]["password"]
         telegramToken = config["telegram_send"]["token"]
         telegramChatId = config["telegram_send"]["chat_id"]
+        PROFILES = config["instagram"]["profiles"]
+        
+        if not isinstance(PROFILES, list ):
+            sys.exit("Profiles is not configured properly")
+
         pathConfig = telegram_send.get_config_path()
         if not os.path.exists(pathConfig.replace("telegram-send.conf", "")):
             os.makedirs(pathConfig.replace("telegram-send.conf", ""))
@@ -44,12 +51,6 @@ else:
     # assume you are not want to login and already config telegram-send from command line with telegram-send --configure-group
     print("Not login")
     telegram_send.send(messages=["Telegram bot synced! with Default Config"])  
-
-# Prod
-PROFILES = ["muslimmyway", "masjidnuruliman", "muhajirprojectpeduli", "muhajirproject", "ad_dariny", "eta.erwanditarmiziofficial", "muhajirprojecttilawah", "muslimafiyahcom", "the_rabbaanians", "haloustadz", "dzulqarnainms", "ustadzaris", "yufid.tv", "parentingruqoyyah", "ub_cintasunnah", "mabduhtuasikal", "hsi.abdullahroy", "rodjatv", "firanda_andirja_official", "rumayshocom", "manhajsalafus.shalih", "indonesiabertauhidofficial", "khalidbasalamahofficial", "amminurbaits", "muslimorid", "muhammadnuzuldzikri", "fikihmuamalatkontemporer", "raehanul_bahraen", "syafiqrizabasalamah_official"]
-
-# Dev
-# PROFILES = ["fikihmuamalatkontemporer"]
 
 while True:
     try:
@@ -114,19 +115,6 @@ while True:
             try:
                 present = datetime.datetime.now()
                 print("Start delete old file")
-                # for f in os.listdir(path):
-                #     f = os.path.join(path, f)
-                #     if os.path.isdir(f):
-                #         for g in os.listdir(f):
-                #             g = os.path.join(f, g)
-                #             dateFile = datetime.datetime.now()
-                #             if platform.system() == 'Windows':
-                #                 dateFile = datetime.fromtimestamp(os.path.getctime(g), tz=None)
-                #             else:
-                #                 dateFile = datetime.fromtimestamp(os.stat(g), tz=None)
-                #             if dateFile.date() < present.date():
-                #                 os.remove(g)
-                #                 print("File deleted")
                 shutil.rmtree(donwloadPath)
                 print("Old file deleted")
             except:
