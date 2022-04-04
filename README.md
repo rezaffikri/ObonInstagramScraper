@@ -51,4 +51,4 @@ Connecting Telegram bot:
             ```
            "chat":{"id":211287643,"title":"InstagramGroup","type":"group","all_members_are_administrators":true}
             ```
-        - If you created the new group with the bot and you only get {"ok":true,"result":[]}, remove and add the bot again to the group.
+        - If you only get {"ok":true,"result":[]}, remove and add the bot again to the group.
