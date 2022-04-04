@@ -62,7 +62,7 @@ while True:
         for itemProfile in _profiles:
             L.dirname_pattern = donwloadPath + itemProfile
             print("Profile: "+itemProfile)
-            print("Timeout: random between 31 and 60 seconds")
+            print("Delay Load Profile: random between 31 and 60 seconds")
             time.sleep(random.randint(31,60))
             profile = instaloader.Profile.from_username(L.context, itemProfile)
             print("Profile loaded")
@@ -71,7 +71,7 @@ while True:
                 postDateLocal = post.date_utc + datetime.timedelta(hours=7)
                 # get today post only
                 if postDateLocal.date() == datetime.datetime.now().date():
-                    print("Timeout: random between 31 and 60 seconds")
+                    print("Delay Download: random between 31 and 60 seconds")
                     time.sleep(random.randint(31,60))
                     download = L.download_post(post,itemProfile)
                     folderProfile = folderDownload + post.owner_username
@@ -89,7 +89,7 @@ while True:
                                         with open(folderProfile+"/"+post.shortcode+fileId+".mp4", "rb") as f:
                                             telegram_send.send(videos=[f])   
                                 except ValueError:
-                                    print("Send media error: \n" + ValueError)
+                                    print("Send multiple media error: \n" + ValueError)
                                     pass
                         else:
                             try:
@@ -100,7 +100,7 @@ while True:
                                     with open(folderProfile+"/"+post.shortcode+".mp4", "rb") as f:
                                         telegram_send.send(videos=[f])   
                             except ValueError:
-                                print("Send media error: \n" + ValueError)
+                                print("Send single media error: \n" + ValueError)
                                 pass
                         try:
                             if post.caption is None:
