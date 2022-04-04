@@ -9,7 +9,7 @@ import random
 import json
 
 print("Starting")
-L = instaloader.Instaloader(download_comments=False, max_connection_attempts=9, post_metadata_txt_pattern=None, save_metadata=False, download_video_thumbnails=False, download_geotags=False, filename_pattern="{shortcode}")
+L = instaloader.Instaloader(download_comments=False, post_metadata_txt_pattern=None, save_metadata=False, download_video_thumbnails=False, download_geotags=False, filename_pattern="{shortcode}")
 
 present = datetime.datetime.now()
 folderDownload = "MediaDownloads/"
@@ -34,6 +34,7 @@ if os.path.exists("AppSettings.json"):
             if not os.path.exists(pathConfig.replace("telegram-send.conf", "")):
                 os.makedirs(pathConfig.replace("telegram-send.conf", ""))
             print("telegram-send.conf path: " + pathConfig)
+            
             if telegramToken and telegramChatId:
                 with open(pathConfig, 'w+') as f:
                     f.write(f'[telegram]\ntoken = {telegramToken}\nchat_id = {telegramChatId}')
@@ -41,6 +42,7 @@ if os.path.exists("AppSettings.json"):
             else:
                 print("assume you already set telegram-send config via cmd \nif error please make sure you already configure telegram-send via cmd or via AppSettings.json")
             telegram_send.send(messages=["Telegram bot synced!"])
+            
             if instagramUserName and instagramPassword:
                 # if you want to download private user media, you need to login and follow their instagram
                 # if your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
