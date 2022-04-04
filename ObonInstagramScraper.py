@@ -1,6 +1,5 @@
 import shutil
 import sys
-from tracemalloc import stop
 import instaloader
 import telegram_send
 import time
@@ -27,7 +26,7 @@ if os.path.exists("AppSettings.json"):
         telegramToken = config["telegram_send"]["token"]
         telegramChatId = config["telegram_send"]["chat_id"]
         PROFILES = config["instagram"]["profiles"]
-        
+
         if not isinstance(PROFILES, list ):
             sys.exit("Profiles is not configured properly")
 
