@@ -45,7 +45,7 @@ if os.path.exists("AppSettings.json"):
                 # if you want to download private user media, you need to login and follow their instagram
                 # if your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
                 print("Login instagram")
-                BOT_INSTAGRAM_ACCOUNT = L.login(instagramUserName,instagramPassword)
+                L.login(instagramUserName,instagramPassword)
                 print("Login instagram successful")
                 telegram_send.send(messages=["Instagram login with username: " + instagramUserName])
             else:
