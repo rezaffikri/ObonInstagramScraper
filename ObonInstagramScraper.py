@@ -78,7 +78,7 @@ while True:
                                             telegram_send.send(images=[f]) 
                                     else:
                                         with open(folderProfile+"/"+post.shortcode+fileId+".mp4", "rb") as f:
-                                            telegram_send.send(files=[f])   
+                                            telegram_send.send(videos=[f])   
                                 except ValueError:
                                     print("Send media error: \n" + ValueError)
                                     pass
@@ -89,7 +89,7 @@ while True:
                                         telegram_send.send(images=[f]) 
                                 else:
                                     with open(folderProfile+"/"+post.shortcode+".mp4", "rb") as f:
-                                        telegram_send.send(files=[f])   
+                                        telegram_send.send(videos=[f])   
                             except ValueError:
                                 print("Send media error: \n" + ValueError)
                                 pass
