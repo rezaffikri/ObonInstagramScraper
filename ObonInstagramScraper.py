@@ -18,37 +18,42 @@ print("executedPath: " +executedPath)
 donwloadPath = executedPath + "/"  + folderDownload
 
 if os.path.exists("AppSettings.json"):
-    with open('AppSettings.json', 'r') as f:
-        config = json.load(f)
-        instagramUserName = config["instagram"]["username"]
-        instagramPassword = config["instagram"]["password"]
-        telegramToken = config["telegram_send"]["token"]
-        telegramChatId = config["telegram_send"]["chat_id"]
-        _profiles = config["instagram"]["profiles"]
+    try:
+        with open('AppSettings.json', 'r') as f:
+            config = json.load(f)
+            instagramUserName = config["instagram"]["username"]
+            instagramPassword = config["instagram"]["password"]
+            telegramToken = config["telegram_send"]["token"]
+            telegramChatId = config["telegram_send"]["chat_id"]
+            _profiles = config["instagram"]["profiles"]
 
-        if not isinstance(_profiles, list ):
-            sys.exit("Profiles is not configured properly")
+            if not isinstance(_profiles, list ):
+                sys.exit("profiles in AppSettings.json is not configured properly")
 
-        pathConfig = telegram_send.get_config_path()
-        if not os.path.exists(pathConfig.replace("telegram-send.conf", "")):
-            os.makedirs(pathConfig.replace("telegram-send.conf", ""))
-        print("telegram-send.conf path: " + pathConfig)
-        if telegramToken and telegramChatId:
-            with open(pathConfig, 'w+') as f:
-                f.write(f'[telegram]\ntoken = {telegramToken}\nchat_id = {telegramChatId}')
-                print("Override telegram-send config")
-            telegram_send.send(messages=["Telegram bot synced! with Override Config"])
-        if instagramUserName and instagramPassword:
-            # if you want to download private user media, you need to login and follow their instagram
-            # if your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
-            print("Login")
-            BOT_INSTAGRAM_ACCOUNT = L.login(instagramUserName,instagramPassword)
-            print("Login successful")
-            telegram_send.send(messages=["Instagram login with username: " + instagramUserName]) 
+            pathConfig = telegram_send.get_config_path()
+            if not os.path.exists(pathConfig.replace("telegram-send.conf", "")):
+                os.makedirs(pathConfig.replace("telegram-send.conf", ""))
+            print("telegram-send.conf path: " + pathConfig)
+            if telegramToken and telegramChatId:
+                with open(pathConfig, 'w+') as f:
+                    f.write(f'[telegram]\ntoken = {telegramToken}\nchat_id = {telegramChatId}')
+                    print("telegram-send config via AppSettings.json")
+            else:
+                print("assume you already set telegram-send config via cmd \nif error please make sure you already configure telegram-send via cmd or via AppSettings.json")
+            telegram_send.send(messages=["Telegram bot synced!"])
+            if instagramUserName and instagramPassword:
+                # if you want to download private user media, you need to login and follow their instagram
+                # if your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
+                print("Login instagram")
+                BOT_INSTAGRAM_ACCOUNT = L.login(instagramUserName,instagramPassword)
+                print("Login instagram successful")
+                telegram_send.send(messages=["Instagram login with username: " + instagramUserName])
+            else:
+                print("Without login instagram")
+    except ValueError:
+        sys.exit("AppSetting.json is not configured properly: " + ValueError)
 else:
-    # assume you are not want to login and already config telegram-send from command line with telegram-send --configure-group
-    print("Not login")
-    telegram_send.send(messages=["Telegram bot synced! with Default Config"])  
+    sys.exit("AppSetting.json is not found")
 
 while True:
     try:
