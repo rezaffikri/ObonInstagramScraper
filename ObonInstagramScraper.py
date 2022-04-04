@@ -69,8 +69,9 @@ while True:
             for post in profile.get_posts():
                 # convert datetime to your country or local time, for this example i just add +7 hours because my timezone is Asia/jakarta
                 postDateLocal = post.date_utc + datetime.timedelta(hours=7)
+                datetimeNowLocal = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
                 # get today post only
-                if postDateLocal.date() == datetime.datetime.now().date():
+                if postDateLocal.date() == datetimeNowLocal.date():
                     print("Delay Download: random between 31 and 60 seconds")
                     time.sleep(random.randint(31,60))
                     download = L.download_post(post,itemProfile)
@@ -118,9 +119,10 @@ while True:
                     break  
             print("Next")
         # every the end of the loop, if old present variable more than datetime.now, delete old file
-        if present.date() < datetime.datetime.now().date():
+        datetimeNowLocal = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
+        if present.date() < datetimeNowLocal.date():
             try:
-                present = datetime.datetime.now()
+                present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
                 if os.path.exists(donwloadPath):
                     print("Start delete old file")
                     shutil.rmtree(donwloadPath)
