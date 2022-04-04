@@ -25,7 +25,8 @@ if os.path.exists("AppSettings.json"):
         telegramToken = config["telegram_send"]["token"]
         telegramChatId = config["telegram_send"]["chat_id"]
         pathConfig = telegram_send.get_config_path()
-        os.makedirs(pathConfig.replace("telegram-send.conf", ""), exist_ok=False)
+        if not os.path.exists(pathConfig.replace("telegram-send.conf", "")):
+            os.makedirs(pathConfig.replace("telegram-send.conf", ""))
         print("telegram-send.conf path: " + pathConfig)
         if telegramToken and telegramChatId:
             with open(pathConfig, 'w+') as f:
@@ -45,10 +46,10 @@ else:
     telegram_send.send(messages=["Telegram bot synced! with Default Config"])  
 
 # Prod
-PROFILES = ["muslimmyway", "masjidnuruliman", "muhajirprojectpeduli", "muhajirproject", "ad_dariny", "eta.erwanditarmiziofficial", "muhajirprojecttilawah", "muslimafiyahcom", "the_rabbaanians", "haloustadz", "dzulqarnainms", "ustadzaris", "yufid.tv", "parentingruqoyyah", "ub_cintasunnah", "mabduhtuasikal", "hsi.abdullahroy", "rodjatv", "firanda_andirja_official", "rumayshocom", "manhajsalafus.shalih", "indonesiabertauhidofficial", "khalidbasalamahofficial", "amminurbaits", "muslimorid", "muhammadnuzuldzikri", "fikihmuamalatkontemporer", "raehanul_bahraen", "syafiqrizabasalamah_official"]
+# PROFILES = ["muslimmyway", "masjidnuruliman", "muhajirprojectpeduli", "muhajirproject", "ad_dariny", "eta.erwanditarmiziofficial", "muhajirprojecttilawah", "muslimafiyahcom", "the_rabbaanians", "haloustadz", "dzulqarnainms", "ustadzaris", "yufid.tv", "parentingruqoyyah", "ub_cintasunnah", "mabduhtuasikal", "hsi.abdullahroy", "rodjatv", "firanda_andirja_official", "rumayshocom", "manhajsalafus.shalih", "indonesiabertauhidofficial", "khalidbasalamahofficial", "amminurbaits", "muslimorid", "muhammadnuzuldzikri", "fikihmuamalatkontemporer", "raehanul_bahraen", "syafiqrizabasalamah_official"]
 
 # Dev
-# PROFILES = ["fikihmuamalatkontemporer"]
+PROFILES = ["fikihmuamalatkontemporer"]
 
 while True:
     try:
@@ -95,9 +96,9 @@ while True:
                                 pass
                         try:
                             if post.caption is None:
-                                telegram_send.send(messages=[""+post.owner_username+": None"])
+                                telegram_send.send(messages=[post.owner_username+": None \n" + post.date_local.strftime("%d/%b/%Y, %H:%M:%S")])
                             else:
-                                telegram_send.send(messages=[post.owner_username+": "+post.caption])
+                                telegram_send.send(messages=[post.owner_username+": "+post.caption + "\n" + post.date_local.strftime("%d/%b/%Y, %H:%M:%S")])
                         except:
                             print("Send caption error")
                             pass

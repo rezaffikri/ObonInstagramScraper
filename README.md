@@ -33,7 +33,7 @@ Edit ObonInstagramScraper.py:
     - *If you want to download private user media, you need to login and follow their instagram
     - *If your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
 - Insert all of username you want to scrap on PROFILES = ["username_1", "username_2"]
-- Currenly to prevent network to be restric, the app will sleep to delay hit, Edit time.sleep(random.randint(31,1800)) to fix value or smaller range number
+- Just in case to prevent network to be restrict, the app will sleep to delay hit, Edit time.sleep(<DelayValue>) to fix value or smaller range number
 Connecting Telegram bot:
 - Via command line:
     - Run CMD as administrator
