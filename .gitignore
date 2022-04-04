@@ -162,4 +162,3 @@ cython_debug/
 # Custom
 MediaDownloads/
 AppSettings.json
-telegram-send.conf
