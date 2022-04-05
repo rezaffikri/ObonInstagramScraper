@@ -61,6 +61,7 @@ if os.path.exists("AppSettings.json"):
 else:
     sys.exit("AppSetting.json is not found")
 
+isLastMinutePostCheck = 'false'
 while True:
     try:
         for itemProfile in _profiles:
@@ -122,17 +123,21 @@ while True:
         datetimeNowLocal = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
         # every the end of the profiles loop, check present variable is equal today or not
         if present.date() < datetimeNowLocal.date():
-            try:
-                present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
-                if isDataRetentionOn == "true":
-                    if os.path.exists(donwloadPath):
-                        print("Start delete old file")
-                        shutil.rmtree(donwloadPath)
-                        print("Old file deleted")
-                    else:
-                        print("Folder download is empty")
-            except ValueError:
-                print("Delete old file error: \n" + ValueError)
+            if isLastMinutePostCheck == 'true':
+                try:
+                    isLastMinutePostCheck = 'false'
+                    present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
+                    if isDataRetentionOn == "true":
+                        if os.path.exists(donwloadPath):
+                            print("Start delete old file")
+                            shutil.rmtree(donwloadPath)
+                            print("Old file deleted")
+                        else:
+                            print("Folder download is empty")
+                except ValueError:
+                    print("Delete old file error: \n" + ValueError)
+            else:
+                isLastMinutePostCheck = 'true'
     except ValueError:
         print("Something wrong: \n" + ValueError)
         pass
