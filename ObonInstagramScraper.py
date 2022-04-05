@@ -28,7 +28,6 @@ if os.path.exists("AppSettings.json"):
             instagramUserName = config["instagram"]["username"]
             instagramPassword = config["instagram"]["password"]
             telegramToken = config["telegram_send"]["token"]
-            # get chat id from https://api.telegram.org/bot<token>/getUpdates
             telegramChatId = config["telegram_send"]["chat_id"]
             _profiles = config["instagram"]["profiles"]
 
@@ -49,8 +48,6 @@ if os.path.exists("AppSettings.json"):
             telegram_send.send(messages=["Telegram bot synced!"])
             
             if instagramUserName and instagramPassword:
-                # if you want to download private user media, you need to login and follow their instagram
-                # if your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
                 print("Login instagram")
                 L.login(instagramUserName,instagramPassword)
                 print("Login instagram successful")
