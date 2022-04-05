@@ -136,7 +136,7 @@ while True:
                     print("Delete old file error: \n" + ValueError)
             else:
                 isLastMinutePostCheck = "true"     
-        if isAlwaysRunning == 'false':
+        if isAlwaysRunning == "false":
             sys.exit("Finish")
     except ValueError:
         print("Something wrong: \n" + ValueError)
