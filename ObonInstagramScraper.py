@@ -13,6 +13,7 @@ L = instaloader.Instaloader(download_comments=False, post_metadata_txt_pattern=N
 
 executedPath = os.getcwd()
 print("executedPath: " +executedPath)
+# convert datetime to your country or local time, for this example i just add +7 hours because my timezone is Asia/jakarta
 present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
 folderDownload = "MediaDownloads/"
 donwloadPath = executedPath + "/"  + folderDownload
@@ -69,7 +70,6 @@ while True:
             profile = instaloader.Profile.from_username(L.context, itemProfile)
             print("Profile loaded")
             for post in profile.get_posts():
-                # convert datetime to your country or local time, for this example i just add +7 hours because my timezone is Asia/jakarta
                 postDateLocal = post.date_utc + datetime.timedelta(hours=7)
                 # get today post only
                 if postDateLocal.date() == present.date():
