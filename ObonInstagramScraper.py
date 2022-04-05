@@ -27,6 +27,7 @@ if os.path.exists("AppSettings.json"):
             instagramUserName = config["instagram"]["username"]
             instagramPassword = config["instagram"]["password"]
             telegramToken = config["telegram_send"]["token"]
+            # get chat id from https://api.telegram.org/bot<token>/getUpdates
             telegramChatId = config["telegram_send"]["chat_id"]
             _profiles = config["instagram"]["profiles"]
 
