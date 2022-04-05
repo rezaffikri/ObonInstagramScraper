@@ -119,20 +119,20 @@ while True:
                 else:
                     print("No new post today")
                     break
-        if isDataRetentionOn == "true":
-            # every the end of the profiles loop, check present variable is equal today or not
-            datetimeNowLocal = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
-            if present.date() < datetimeNowLocal.date():
-                try:
-                    present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
+        datetimeNowLocal = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
+        # every the end of the profiles loop, check present variable is equal today or not
+        if present.date() < datetimeNowLocal.date():
+            try:
+                present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
+                if isDataRetentionOn == "true":
                     if os.path.exists(donwloadPath):
                         print("Start delete old file")
                         shutil.rmtree(donwloadPath)
                         print("Old file deleted")
                     else:
                         print("Folder download is empty")
-                except ValueError:
-                    print("Delete old file error: \n" + ValueError)
+            except ValueError:
+                print("Delete old file error: \n" + ValueError)
     except ValueError:
         print("Something wrong: \n" + ValueError)
         pass
