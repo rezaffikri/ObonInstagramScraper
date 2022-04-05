@@ -16,6 +16,7 @@ folderDownload = "MediaDownloads/"
 executedPath = os.getcwd()
 print("executedPath: " +executedPath)
 donwloadPath = executedPath + "/"  + folderDownload
+print("donwloadPath: " +donwloadPath)
 
 if os.path.exists("AppSettings.json"):
     try:
