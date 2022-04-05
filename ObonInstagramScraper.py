@@ -21,6 +21,7 @@ if os.path.exists("AppSettings.json"):
     try:
         with open('AppSettings.json', 'r') as f:
             config = json.load(f)
+            isDataRetentionOn = config["is_data_retention_on"]
             instagramUserName = config["instagram"]["username"]
             instagramPassword = config["instagram"]["password"]
             telegramToken = config["telegram_send"]["token"]
@@ -112,25 +113,25 @@ while True:
                             print("Send caption error: \n" + ValueError)
                             pass
                     else:
-                        print("Post already donwloaded")
+                        # Post already donwloaded, no need to print info here because download_post from instaloader already print the info
                         break  
                 else:
                     print("No new post today")
-                    break  
-            print("Next")
-        # every the end of the loop, if old present variable more than datetime.now, delete old file
-        datetimeNowLocal = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
-        if present.date() < datetimeNowLocal.date():
-            try:
-                present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
-                if os.path.exists(donwloadPath):
-                    print("Start delete old file")
-                    shutil.rmtree(donwloadPath)
-                    print("Old file deleted")
-                else:
-                    print("Folder download is empty")
-            except ValueError:
-                print("Delete old file error: \n" + ValueError)
+                    break
+        if isDataRetentionOn == "true":
+            # every the end of the loop, if old present variable more than datetime.now, delete old file
+            datetimeNowLocal = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
+            if present.date() < datetimeNowLocal.date():
+                try:
+                    present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
+                    if os.path.exists(donwloadPath):
+                        print("Start delete old file")
+                        shutil.rmtree(donwloadPath)
+                        print("Old file deleted")
+                    else:
+                        print("Folder download is empty")
+                except ValueError:
+                    print("Delete old file error: \n" + ValueError)
     except ValueError:
         print("Something wrong: \n" + ValueError)
         pass
