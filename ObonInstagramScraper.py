@@ -24,6 +24,7 @@ if os.path.exists("AppSettings.json"):
         with open('AppSettings.json', 'r') as f:
             config = json.load(f)
             isDataRetentionOn = config["is_data_retention_on"]
+            isAlwaysRunning = config["is_always_running"]
             instagramUserName = config["instagram"]["username"]
             instagramPassword = config["instagram"]["password"]
             telegramToken = config["telegram_send"]["token"]
@@ -137,7 +138,11 @@ while True:
                 except ValueError:
                     print("Delete old file error: \n" + ValueError)
             else:
-                isLastMinutePostCheck = "true"
+                isLastMinutePostCheck = "true"  
+        # set is_always_running in AppSettings.json to 'true' if you want the app to always running
+        # set is_always_running in AppSettings.json to 'false' if you don't need to run 24/7 and use scheduler to run this app        
+        if isAlwaysRunning == 'false':
+            sys.exit("Finish")
     except ValueError:
         print("Something wrong: \n" + ValueError)
         pass
