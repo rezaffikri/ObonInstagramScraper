@@ -14,7 +14,7 @@ L = instaloader.Instaloader(download_comments=False, post_metadata_txt_pattern=N
 executedPath = os.getcwd()
 print("executedPath: " +executedPath)
 # convert datetime to your country or local time, for this example i just add +7 hours because my timezone is Asia/jakarta
-present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
+postDateMin = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
 folderDownload = "MediaDownloads/"
 donwloadPath = executedPath + "/"  + folderDownload
 print("donwloadPath: " +donwloadPath)
@@ -71,8 +71,7 @@ while True:
             print("Profile loaded")
             for post in profile.get_posts():
                 postDateLocal = post.date_utc + datetime.timedelta(hours=7)
-                # get today post only
-                if postDateLocal.date() == present.date():
+                if postDateLocal >= postDateMin:
                     print("Delay Download: random between 31 and 60 seconds")
                     time.sleep(random.randint(31,60))
                     download = L.download_post(post,itemProfile)
@@ -119,12 +118,12 @@ while True:
                     print("No new post today")
                     break
         datetimeNowLocal = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
-        # every the end of the profiles loop, check present variable is equal today or not
-        if present.date() < datetimeNowLocal.date():
+        # every the end of the profiles loop, check postDateMin variable is equal today or not
+        if postDateMin.date() < datetimeNowLocal.date():
             if isLastMinutePostCheck == "true":
                 try:
                     isLastMinutePostCheck = "false"
-                    present = datetime.datetime.utcnow() + datetime.timedelta(hours=7)
+                    postDateMin = datetime.datetime(datetimeNowLocal.year, datetimeNowLocal.month, datetimeNowLocal.day, 0, 0, 0)
                     if isDataRetentionOn == "true":
                         if os.path.exists(donwloadPath):
                             print("Start delete old file")
