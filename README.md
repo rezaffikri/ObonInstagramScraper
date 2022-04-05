@@ -22,56 +22,58 @@ Install Python:
 
 Install Python Modules:
 - Open cmd and use the following command:
-```elm
-pip install instaloader
+    ```elm
+    pip install instaloader
 
-pip install telegram-send
-```
+    pip install telegram-send
+    ```
 
-Edit ObonInstagramScraper.py:
-- Create or edit AppSettings.json file, see AppSettings.Development.json for example
-- Edit <username> and <password> on AppSettings.json, insert empty value if you not want to login
+Create and configure AppSettings.json:
+- See AppSettings.Development.json for example
+- Set instagram username and password, insert empty value if you don't want to login
     - *If you want to download private user media, you need to login and follow their instagram
-    - *If your network has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
-- Edit <profiles> and insert all of username you want to scrap on AppSettings.json = ["username_1", "username_2"]
-- Just in case to prevent network to be restrict, the app will sleep to delay hit, Edit time.sleep(<DelayValue>) to fix value or smaller range number
-Connecting Telegram bot:
+    - *If your network/IP has been restricted, you need to login too, or you have to wait before hit again and i don't know how long
+- Set instagram profiles all of username you want to scrap
+- Set is_data_retention_on to true if you want to delete downloaded file every the end of day or false to keep forever the downloaded file
+- Set is_always_running to true if you want the app to always running or false if you don't need the app to run 24/7 and use scheduler to run this app   
+- For configure telegram_send check on the Connecting Telegram Bot section
+
+Connecting Telegram Bot:
 - Via command line:
     - Open cmd and use the following command:
-    ```elm
-    telegram-send --configure-group
-    ```
+        ```elm
+        telegram-send --configure-group
+        ```
     - Follow the telegram-send instruction to connecting to your group
 - Via AppSettings.json:
-    - Create or edit AppSettings.json file, see AppSettings.Development.json for example
-    - Edit <token> and <chat> id on AppSettings.json, insert empty value if you connecting telegram bot via command line
-    - Get chat id with this step:
-        - Add the Telegram Bot to the group.
-        - Get the list of updates for your Bot: api.telegram.org/bot<Telegram Bot Token>/getUpdates, example: api.telegram.org/bot139___UdeY/getUpdates
-        - Look for the "chat" object, on the example below the Chat Id is -211287643:
-            ```
-           "chat":{"id":211287643,"title":"InstagramGroup","type":"group","all_members_are_administrators":true}
-            ```
-        - If you only get {"ok":true,"result":[]}, remove and add the bot again to the group.
+    - Set telegram_send token with Telegram Bot Token and chat_id with your group chat id, insert both with empty value if you already connecting telegram bot via command line
+        - Get chat_id with this step:
+            - Add the Telegram Bot to the group.
+            - Hit api.telegram.org/bot[ token ]/getUpdates, example: api.telegram.org/bot139___:______UdeY/getUpdates
+            - Look for the "chat" object, on the example below the Chat Id is -211287643:
+                ```elm
+                "chat":{"id":211287643,"title":"InstagramGroup","type":"group","all_members_are_administrators":true}
+                ```
+            - If you only get {"ok":true,"result":[]}, remove and add the bot again to the group.
 
 ## [Deploy to Heroku](https://devcenter.heroku.com/articles/getting-started-with-python)
 - Via Heroku CLI
     - Install Heroku CLI
-    - Install Git
+    - Install git-scm
     - Open cmd on your project and use the following command:
-    ```elm
-    heroku login
+        ```elm
+        heroku login
 
-    heroku create
+        heroku create NAME_OF_YOUR_HEROKU_APP
 
-    heroku git:remote -a NAME_OF_YOUR_HEROKU_APP
+        heroku git:remote -a NAME_OF_YOUR_HEROKU_APP
 
-    git add .
+        git add .
 
-    git commit -m "initial-commit"
+        git commit -m "initial-commit"
 
-    git push heroku main
-    ```
+        git push heroku main
+        ```
 - Via Heroku Dashbord with Github
     - Create a new app
     - Connect to github

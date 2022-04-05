@@ -138,9 +138,7 @@ while True:
                 except ValueError:
                     print("Delete old file error: \n" + ValueError)
             else:
-                isLastMinutePostCheck = "true"  
-        # set is_always_running in AppSettings.json to 'true' if you want the app to always running
-        # set is_always_running in AppSettings.json to 'false' if you don't need to run 24/7 and use scheduler to run this app        
+                isLastMinutePostCheck = "true"     
         if isAlwaysRunning == 'false':
             sys.exit("Finish")
     except ValueError:
