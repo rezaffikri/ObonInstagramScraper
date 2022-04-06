@@ -25,13 +25,14 @@ if os.path.exists("AppSettings.json"):
             config = json.load(f)
             isDataRetentionOn = config["is_data_retention_on"]
             isAlwaysRunning = config["is_always_running"]
-            instagramUserName = config["instagram"]["username"]
-            instagramPassword = config["instagram"]["password"]
-            telegramToken = config["telegram_send"]["token"]
-            telegramChatId = config["telegram_send"]["chat_id"]
-            _profiles = config["instagram"]["profiles"]
+            igDelayProfileMin = int(config["delay"]["profile_min"])
+            igDelayProfileMax = int(config["delay"]["profile_max"])
+            igDelayPostMin = int(config["delay"]["post_min"])
+            igDelayPostMax = int(config["delay"]["post_max"])
+            print("igDelayProfileMin:" + config["delay"]["profile_min"] + " igDelayProfileMax:" + config["delay"]["profile_max"] + " igDelayPostMin:" + config["delay"]["post_min"] +" igDelayPostMax:" + config["delay"]["post_max"])    
+            profiles = config["instagram"]["profiles"]
 
-            if not isinstance(_profiles, list ):
+            if not isinstance(profiles, list ):
                 sys.exit("profiles in AppSettings.json is not configured properly")
 
             pathConfig = telegram_send.get_config_path()
@@ -39,6 +40,8 @@ if os.path.exists("AppSettings.json"):
                 os.makedirs(pathConfig.replace("telegram-send.conf", ""))
             print("telegram-send.conf path: " + pathConfig)
             
+            telegramToken = config["telegram_send"]["token"]
+            telegramChatId = config["telegram_send"]["chat_id"]
             if telegramToken and telegramChatId:
                 with open(pathConfig, 'w+') as f:
                     f.write(f'[telegram]\ntoken = {telegramToken}\nchat_id = {telegramChatId}')
@@ -47,6 +50,8 @@ if os.path.exists("AppSettings.json"):
                 print("assume you already set telegram-send config via cmd \nif error please make sure you already configure telegram-send via cmd or via AppSettings.json")
             telegram_send.send(messages=["Telegram bot synced!"])
             
+            instagramUserName = config["instagram"]["username"]
+            instagramPassword = config["instagram"]["password"]
             if instagramUserName and instagramPassword:
                 print("Login instagram")
                 L.login(instagramUserName,instagramPassword)
@@ -62,18 +67,18 @@ else:
 isLastMinutePostCheck = "false"
 while True:
     try:
-        for itemProfile in _profiles:
+        for itemProfile in profiles:
             L.dirname_pattern = donwloadPath + itemProfile
             print("Profile: "+itemProfile)
-            print("Delay Load Profile: random between 31 and 60 seconds")
-            time.sleep(random.randint(31,60))
+            print("Delay Load Profile")          
+            time.sleep(random.randint(igDelayProfileMin,igDelayProfileMax))
             profile = instaloader.Profile.from_username(L.context, itemProfile)
             print("Profile loaded")
             for post in profile.get_posts():
                 postDateLocal = post.date_utc + datetime.timedelta(hours=7)
                 if postDateLocal >= postDateMin:
-                    print("Delay Download: random between 31 and 60 seconds")
-                    time.sleep(random.randint(31,60))
+                    print("Delay Download")
+                    time.sleep(random.randint(igDelayPostMin,igDelayPostMax))
                     download = L.download_post(post,itemProfile)
                     folderProfile = folderDownload + post.owner_username
                     if download == True:
