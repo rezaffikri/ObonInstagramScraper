@@ -1,6 +1,6 @@
 # Obon Instagram Scraper ![GitHub follow](https://img.shields.io/github/followers/rezaffikri?label=Follow&style=social) ![GitHub repo size](https://img.shields.io/github/repo-size/rezaffikri/ObonInstagramScraper) ![GitHub](https://img.shields.io/github/license/rezaffikri/ObonInstagramScraper)
 
- This is my first Python Project, this python project is to scrap instagram today video and photo with caption and send it to telegram group and ready to be deploy on heroku.
+ This is my first Python Project, this python project is to scrap instagram today video and photo with caption and send it to telegram group or channel and ready to be deploy on heroku.
  Inspired by by this project [Automated-Media-Collector](https://github.com/ficanovak/Automated-Media-Collector) by [ficanovak](https://github.com/ficanovak).
  
  ## Requirements
