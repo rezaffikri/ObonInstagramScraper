@@ -71,6 +71,20 @@ Connecting Telegram Bot:
                     - If you success send the message, you can change the channel to private again and make sure again the Chat Id is correct and not change
 
 ## [Deploy to Heroku](https://devcenter.heroku.com/articles/getting-started-with-python)
+
+Run heroku via worker
+- Edit procfile and insert this "worker: python ObonInstagramscraper.py"
+    - *If you use free heroku and you use worker, your app will always running and eat a lot of free dyno hour 24/7 and your free dyno hour is limit 550 hours, so be carefull and always monitor your free dyno hour or you can use heroku scheduler plus setting is_always_running to false on AppSettings.json  or use heroku hobby plan, see this explanation about [Free Dyno Hour](https://devcenter.heroku.com/articles/free-dyno-hours)
+
+Run heroku via web
+- *Your web will be sleep when not receiving traffic in 30 minutes
+- *Use web if you want to save more free dyno hour
+- Edit procfile and insert this "web: python HerokuWeb.py"
+- Edit HerokuWeb.py if you need change some config below:
+    - The default setting is the web will be ping itself every 25 minutes in between 05:00:00 - 20:00:00, see method ping() to configure 
+    - And for the first starting app, you can manual access or use [uptimerobot](https://uptimerobot.com) to hit your_app_name.herokuapp.com/start and start the process
+
+Deploy
 - Via Heroku CLI
     - Install Heroku CLI
     - Install git-scm

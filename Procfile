@@ -1,1 +1,1 @@
-worker: python ObonInstagramScraper.py 
+web: python HerokuWeb.py
