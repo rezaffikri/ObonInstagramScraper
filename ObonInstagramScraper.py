@@ -32,7 +32,7 @@ def start():
                 igDelayPostMin = int(config["delay"]["post_min"])
                 igDelayPostMax = int(config["delay"]["post_max"])
                 print("igDelayProfileMin:" + config["delay"]["profile_min"] + " igDelayProfileMax:" + config["delay"]["profile_max"] + " igDelayPostMin:" + config["delay"]["post_min"] +" igDelayPostMax:" + config["delay"]["post_max"])    
-                profiles = config["instagram"]["profiles_dev"]
+                profiles = config["instagram"]["profiles"]
 
                 if not isinstance(profiles, list ):
                     sys.exit("profiles in AppSettings.json is not configured properly")
